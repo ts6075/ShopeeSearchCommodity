@@ -1,10 +1,27 @@
+import configparser
 import requests
 import json
 
 
 # #################
+# # 發送LineNotify訊息 #
+# #################
+def lineNotify(message, token):
+    notify_Post_Url = 'https://notify-api.line.me/api/notify'     # Line api
+    headers = {'Authorization': 'Bearer ' + token}
+    payload = {"message": message}
+    res = requests.post(notify_Post_Url, headers=headers, params=payload)
+    print(res)
+
+
+# #################
 # # 基礎設定       #
 # #################
+# load config
+config = configparser.ConfigParser()
+config.read('Config.ini')
+# Line token
+notify_token = config.get('Section_Info', 'notify_token')
 # 商家ID
 shopId = '54133273'
 # 商品分類ID
@@ -92,3 +109,4 @@ for commodity in commodityList:
 # 輸出結果
 for s in outList:
     print(s)
+    # lineNotify(s, notify_token)
